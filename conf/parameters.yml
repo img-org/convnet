@@ -4,8 +4,11 @@ VERSION: 1 # (int)
 LABELS: ["T-shirt/top","trouser", "pullover", "Dress", 
                 "coat", "Sandal", "Shirt","Sneaker", "Bag", "Ankle boot"]
 
+MODEL_LOSS: "sparse_categorical_crossentropy"
+METRICS: ["accuracy"]
+
 # set storage path
-MODEL_PATH: tempfile.gettempdir()
+MODEL_PATH: model/
 
 # model
 MODEL_NAME: img_model
