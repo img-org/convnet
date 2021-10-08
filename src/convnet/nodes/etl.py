@@ -1,7 +1,7 @@
 
 import tensorflow as tf 
 
-def load_dataset(name:str="fashion_mnist"):
+def load_dataset(name="fashion_mnist"):
     """Import train and test dataset
 
     Args:

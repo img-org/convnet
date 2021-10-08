@@ -1,0 +1,17 @@
+# Set hyperparameters
+EPOCHS: 5 
+VERSION: 1 # (int)
+LABELS: ["T-shirt/top","trouser", "pullover", "Dress", 
+                "coat", "Sandal", "Shirt","Sneaker", "Bag", "Ankle boot"]
+
+# set storage path
+MODEL_PATH: tempfile.gettempdir()
+
+# model
+MODEL_NAME: img_model
+
+# Server HOST
+HOST: http://localhost
+
+# Server PORT
+PORT: 8502
