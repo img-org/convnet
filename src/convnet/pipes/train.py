@@ -39,5 +39,7 @@ def run(params:Dict[str, Any]):
     print(f"\nTest accuracy: {test_acc}")
 
     # save model
+    from ipdb import set_trace; set_trace()
+
     save_path = os.path.join(MODEL_PATH, str(MODEL_VERS))
     save_model(model, save_path)

@@ -1,5 +1,5 @@
 # Set hyperparameters
-EPOCHS: 5 
+EPOCHS: 1
 VERSION: 1 # (int)
 LABELS: ["T-shirt/top","trouser", "pullover", "Dress", 
                 "coat", "Sandal", "Shirt","Sneaker", "Bag", "Ankle boot"]
@@ -11,7 +11,7 @@ METRICS: ["accuracy"]
 MODEL_PATH: model/
 
 # model
-MODEL_NAME: img_model
+MODEL_NAME: model
 
 # Server HOST
 HOST: http://localhost
