@@ -19,5 +19,6 @@ echo ". /usr/local/etc/profile.d/conda.sh" >> ~/.bashrc
 source ~/.bashrc
 
 # create and activate conda virtual environment  
-conda env create -f src/environment.yml # creates my_env
+conda create --name convnet # creates my_env
 conda activate convnet
+pip install -r src/requirements.txt

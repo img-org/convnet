@@ -46,7 +46,7 @@ if __name__ == "__main__":
         
         train(PARAMS)
 
-    elif sys.argv[0]=="deploy":
+    else:
 
         # serve model        
         os.environ["MODEL_PATH"] = PARAMS["MODEL_PATH"]

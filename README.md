@@ -2,26 +2,39 @@
 
 author: steeve LAQUITAINE
 
-## Prerequisites
-
-* deployment server:
-    * > 4GB RAM
-    * docker installed
+## Development & train
 
 ## Setup
 
 ```bash
-bash setup.sh # setup tensoflow server dependencies
-bash setup_conda.sh # install miniconda 4.5.4
-conda env create -f src/environment.yml # creates my_env
+# setup tensorflow server dependencies, 
+# install conda 4.5.4
+# create conda environment, activate and
+# install codebase dependencies  
+bash setup.sh # install miniconda 4.5.4
 ```
 
-## Run
+## train model
 
 ```bash
 python main.py train
 ```
 
+
+## Deployment 
+
+### Prerequisites
+
+* Deployment server:
+    * > 4GB RAM
+    * docker desktop/and or engine installed
+
+### Setup
+
+```bash
+docker_build_model_server.sh
+docker_build_web_server.sh
+```
 
 # Tools
 

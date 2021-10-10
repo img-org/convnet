@@ -12,6 +12,6 @@
 
 VERSION="0.8.1"
 ARCH="x86_64"
-APP="convnet"
-docker build -f ./dockerfile -t $ARCH/$APP:$VERSION .
+APP="convnet-web-service"
+docker build -f ./dockerfile_web -t $ARCH/$APP:$VERSION .
 
