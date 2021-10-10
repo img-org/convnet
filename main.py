@@ -42,17 +42,22 @@ if __name__ == "__main__":
     """
     entry point
     """
+    if sys.argv[0]=="train":
+        
+        train(PARAMS)
 
-    # serve model        
-    os.environ["MODEL_PATH"] = PARAMS["MODEL_PATH"]
-    # ngrok_tunnel = ngrok.connect(8502)
-    # print('\nModel served HERE on Public URL:', ngrok_tunnel.public_url, "\n")    
-    # os.system("bash serve.sh")
-    os.system("bg nohup tensorflow_model_server --rest_api_port=8502 --model_name=model --model_base_path=/root/convnet/model > logs/tf_server.out 2>&1")
-    
-    # expose what's hosted on the localhost to the net ww/ temporary public URL
-    ngrok_tunnel = ngrok.connect(8000)
-    print('\nExposed HERE on Public URL:', ngrok_tunnel.public_url, "\n")
-    nest_asyncio.apply()
-    uvicorn.run(app, port=8000)
+    elif sys.argv[0]=="deploy":
+
+        # serve model        
+        os.environ["MODEL_PATH"] = PARAMS["MODEL_PATH"]
+        # ngrok_tunnel = ngrok.connect(8502)
+        # print('\nModel served HERE on Public URL:', ngrok_tunnel.public_url, "\n")    
+        # os.system("bash serve.sh")
+        os.system("bg nohup tensorflow_model_server --rest_api_port=8502 --model_name=model --model_base_path=/root/convnet/model > logs/tf_server.out 2>&1")
+        
+        # expose what's hosted on the localhost to the net ww/ temporary public URL
+        ngrok_tunnel = ngrok.connect(8000)
+        print('\nExposed HERE on Public URL:', ngrok_tunnel.public_url, "\n")
+        nest_asyncio.apply()
+        uvicorn.run(app, port=8000)
 
