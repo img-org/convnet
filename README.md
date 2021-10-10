@@ -4,6 +4,10 @@ author: steeve LAQUITAINE
 
 ## Prerequisites
 
+* deployment server:
+    * > 4GB RAM
+    * docker installed
+
 ## Setup
 
 ```bash
