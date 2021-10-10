@@ -18,5 +18,6 @@ chmod +x $MINICONDA_INSTALLER_SCRIPT
 echo ". /usr/local/etc/profile.d/conda.sh" >> ~/.bashrc
 source ~/.bashrc
 
-# activate conda virtual environment  
+# create and activate conda virtual environment  
 conda env create -f src/environment.yml # creates my_env
+conda activate convnet
