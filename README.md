@@ -20,7 +20,6 @@ bash setup.sh # install miniconda 4.5.4
 python main.py train
 ```
 
-
 ## Deployment 
 
 ### Prerequisites
@@ -31,8 +30,10 @@ python main.py train
 
 ### Setup
 
+* Build model server (300MB) and web server containers (~3GB):
+
 ```bash
-docker_build_model_server.sh
+docker_build_model_server.sh 
 docker_build_web_server.sh
 ```
 
