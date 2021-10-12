@@ -22,7 +22,7 @@ services:
       - "--api.insecure=true" 
       - "--providers.docker"
     ports: # open these ports HOST:CONTAINER
-      - "8000:8000" # serves traefik dashboard http://127.0.0.1:8080/dashboard/
+      - "8000:8000" 
       - "8080:8080" # serves traefik dashboard http://127.0.0.1:8080/dashboard/
     labels:
       - traefik.enable=true
