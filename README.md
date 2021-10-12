@@ -39,5 +39,9 @@ docker_build_web_server.sh
 
 # Tools
 
-* `ngrock`: You can use ngrok to export a port as an external url. Basically, ngrok takes something available/hosted on your localhost and exposes it to the internet with a temporary public URL.
+* `ngrok`: You can use ngrok to export a port as an external url. Basically, ngrok takes something available/hosted on your localhost and exposes it to the internet with a temporary public URL.
 
+* `Docker Compose`: to configure & start all the containers  
+
+
+nohup tensorflow_model_server --rest_api_port=8502 --model_name=img_model --model_base_path="${model}" >logs/server.log 2>&1 # path of model to serve

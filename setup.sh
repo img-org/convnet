@@ -5,6 +5,7 @@ echo "deb http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow
 curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | sudo apt-key add -
 sudo apt-get update && sudo apt-get install tensorflow-model-server
 
+
 # Setup and activate a virtual environmment
 # -----------------------------------------
 # install miniconda to work in a virtual environment

@@ -1,3 +1,27 @@
 {
-    "python.pythonPath": "/usr/local/envs/convnet/bin/python"
+    // LINTING
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "pylint.extensions.mccabe",
+        "--max-complexity",
+        "10"
+    ],
+    // FORMATTING
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSaveTimeout": 3000,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "-t",
+        "py37",
+        "--line-length",
+        "60"
+    ],
+    // PYLANCE REFACTORING
+    "editor.lightbulb.enable": true
 }

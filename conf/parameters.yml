@@ -8,10 +8,10 @@ MODEL_LOSS: "sparse_categorical_crossentropy"
 METRICS: ["accuracy"]
 
 # set storage path
-MODEL_PATH: model/
+MODEL_PATH: ./models/model/
 
 # model
-MODEL_NAME: model
+MODEL_NAME: convnet
 
 # Server HOST
 HOST: http://localhost

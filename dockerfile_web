@@ -12,4 +12,4 @@ USER python
 ENV PATH="/home/worker/.local/bin:${PATH}"
 COPY --chown=python:python . .
 RUN pip install -r src/requirements.txt
-CMD ["python", "-u", "main.py"]
+CMD ["python", "-u", "main.py", "serve_web"]
