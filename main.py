@@ -2,7 +2,13 @@ import sys
 
 import uvicorn
 import yaml
-from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi import (
+    FastAPI,
+    File,
+    HTTPException,
+    Request,
+    UploadFile,
+)
 from fastapi.datastructures import UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -60,11 +66,11 @@ async def predict(img: UploadFile = File(...)):
     return {"prediction:", predicted}
 
 
-@app.get("/items/{id}", response_class=HTMLResponse)
-async def read_item(request: Request, id: str):
-    return templates.TemplateResponse(
-        "item.html", {"request": request, "id": id}
-    )
+# @app.get("/items/{id}", response_class=HTMLResponse)
+# async def read_item(request: Request, id: str):
+#     return templates.TemplateResponse(
+#         "item.html", {"request": request, "id": id}
+#     )
 
 
 if __name__ == "__main__":
@@ -74,8 +80,12 @@ if __name__ == "__main__":
         # training
         python main.py train
     """
+
+    # get run argument
     args = sys.argv
     is_arg = len(args) == 2
+
+    # choose task
     if is_arg and args[1] == "train":
         print("training")
         train.run(params=PARAMS)
