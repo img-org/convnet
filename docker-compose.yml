@@ -1,0 +1,50 @@
+# author: steeve laquitaine
+# purpose:
+#
+#   Run all containers
+# 
+# usage:
+#
+#     docker-compose up  
+
+version: '3.8'
+services:
+  reverse-proxy:
+    image: traefik:v2.4 # build container from this image
+    container_name: reverse-proxy
+    command: 
+      - "--log.level=DEBUG"
+      # Traefik will listen on port 8080 by default for API request
+      - "--api.insecure=true" 
+      - "--providers.docker"
+    ports: # open these ports HOST:CONTAINER
+      - "8000:8000" 
+      - "8080:8080" # serves traefik dashboard http://127.0.0.1:8080/dashboard/
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=pred-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  
+    networks:
+      - pred-network
+  model-service:
+    image: x86_64/convnet-model-service:0.8.1
+    container_name: model-service
+    environment: # set environment variable in container
+      MODEL_NAME: model
+    networks:
+      - pred-network
+  web-service:
+    image: x86_64/convnet-web-service:0.8.1
+    container_name: web-service
+    environment:
+      SERVING_SERVICE: model-service
+    expose:
+      - 8000
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.web-service.rule=Host(`web.service.localhost`)
+    networks:
+      - pred-network
+networks:
+  pred-network:
