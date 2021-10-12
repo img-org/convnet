@@ -1,26 +1,26 @@
-import os
 import sys
 
-import nest_asyncio
 import uvicorn
 import yaml
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi.datastructures import UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from src.convnet.nodes.etl import read_convert_image
+from src.convnet.nodes.prep import to_gray
+from src.convnet.pipes import inference, train
+
 # web page templating
-from pyngrok import ngrok
-
-from src.convnet.pipes import predict
-from src.convnet.pipes import train as training
-
 # get jinja templates' path
 templates = Jinja2Templates(directory="templates")
 
 # instantiate web server
 app = FastAPI()
 
-with open("conf/parameters.yml") as file:
+# get parameters
+params_path = "conf/parameters.yml"
+with open(params_path) as file:
     PARAMS = yaml.safe_load(file)
 
 
@@ -29,14 +29,35 @@ def home():
     return {"Home"}
 
 
-@app.get("/train")
-async def train():
-    train.run(params=PARAMS)
+@app.post("/predict")
+async def predict(img: UploadFile = File(...)):
 
-
-@app.get("/predict")
-async def predict():
-    predict.run()
+    # handle exceptions
+    if img is None or img.file is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Please provide an image",
+        )
+    ext = img.filename.split(".")[-1] in (
+        "jpg",
+        "jpeg",
+        "png",
+    )
+    # check extension
+    if not ext:
+        raise HTTPException(
+            status_code=400,
+            detail="Please load a .jpg or .png",
+        )
+    # preprocesisng
+    # make (height, width, 3) RGB
+    img_data = read_convert_image(
+        img.file.read(), height=28, width=28
+    )
+    # make (height, width, 1) gray
+    img_data = to_gray(img_data)
+    predicted = inference.run(img_data)
+    return {"prediction:", predicted}
 
 
 @app.get("/items/{id}", response_class=HTMLResponse)
@@ -49,18 +70,15 @@ async def read_item(request: Request, id: str):
 if __name__ == "__main__":
     """
     entry point
+    usage:
+        # training
+        python main.py train
     """
-    if sys.argv[1] == "train":
-        # train
+    args = sys.argv
+    is_arg = len(args) == 2
+    if is_arg and args[1] == "train":
         print("training")
-        training.run(params=PARAMS)
-    else:
-        # expose the localhost to the net w/ a temporary public URL
-        ngrok_tunnel = ngrok.connect(8000)
-        print(
-            "\nExposed HERE on Public URL:",
-            ngrok_tunnel.public_url,
-            "\n",
-        )
-        nest_asyncio.apply()
+        train.run(params=PARAMS)
+    if is_arg and args[1] == "web_serve":
+        print("serving web")
         uvicorn.run(app, port=8000)

@@ -17,7 +17,7 @@ import tensorflow as tf
 from src.convnet.nodes.prep import normalize, reshape
 
 
-def run():
+def run(img):
 
     # PARAMS
     # ----
@@ -50,15 +50,15 @@ def run():
     # Data
     # ----
     # simulate data to predict
-    (X_train, _), (
-        X_test,
-        _,
-    ) = tf.keras.datasets.fashion_mnist.load_data()
+    # (X_train, _), (
+    #     X_test,
+    #     _,
+    # ) = tf.keras.datasets.fashion_mnist.load_data()
 
     # preprocess
-    _, X_test = normalize(X_train, X_test)
+    _, X_test = normalize(img, img)
     _, X_test = reshape(
-        X_train, X_test, height=28, width=28, channel=1
+        X_test, X_test, height=28, width=28, channel=1
     )
     data = X_test[0:3].tolist()
 
