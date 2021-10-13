@@ -1,54 +1,64 @@
-# author: steeve laquitaine
-# purpose:
+# usage :
 #
-#   Run all containers
+#   ``bash
+#   # create an external public network 
+#   docker network create traefik-public
+#   # compose containers
+#   docker-compose up  
+#   ```
 # 
-# usage:
-#
-#     ```bash
-#     # run containers on the deployment machine
-#     docker-compose up  
-#     ```
-#     open http://127.0.0.1:8080/dashboard/
+#   Open swagger ui in Chrome or Vivaldi browser http://web.service.localhost/docs. 
+#   Currently does not work in firefox and safari.
 
-version: '3.8'
 services:
   reverse-proxy:
     image: traefik:v2.4 # build container from this image
     container_name: reverse-proxy
     command: 
-      - "--log.level=DEBUG"
       # Traefik will listen on port 8080 by default for API request
-      - "--api.insecure=true" 
+      - "--api.insecure=true"  # NOT RECOMMENDED FOR PRODUCTION
       - "--providers.docker"
-    ports: # open these ports HOST:CONTAINER
-      - "8000:8000" 
-      - "8080:8080" # serves traefik dashboard http://127.0.0.1:8080/dashboard/
+      # do not expose all docker services, only the ones specified
+      - "--providers.docker.exposedbydefault=false" # don't expose every container to traefik, only enabled ones
+      - "--entrypoints.http.address=:80"
+    ports:
+      # local machine port : container port
+      - 80:80       # default http ports
+      - 443:443     # default https ports
+      - 8080:8080   # default traefik dashboard
+    restart: always
     labels:
       - traefik.enable=true
-      - traefik.docker.network=pred-network
+      - traefik.docker.network=traefik-public      
     volumes:
+      # Add Docker as a mounted volume, so that 
+      # Traefik can communicate w/ it
       - /var/run/docker.sock:/var/run/docker.sock  
     networks:
-      - pred-network
+      - traefik-public
+
+  # model service
   model-service:
     image: x86_64/convnet-model-service:0.8.1
     container_name: model-service
     environment: # set environment variable in container
       MODEL_NAME: model
     networks:
-      - pred-network
+      - traefik-public
+
+  # web service
   web-service:
     image: x86_64/convnet-web-service:0.8.1
     container_name: web-service
     environment:
       SERVING_SERVICE: model-service
-    expose:
-      - 8000
     labels:
       - traefik.enable=true
+      # specify host to search in web browser
       - traefik.http.routers.web-service.rule=Host(`web.service.localhost`)
     networks:
-      - pred-network
+      - traefik-public
+      
 networks:
-  pred-network:
+  traefik-public:
+    external: true
