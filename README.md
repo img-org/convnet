@@ -28,23 +28,26 @@ python main.py train
     * > 4GB RAM
     * docker desktop/and or engine installed
 
-* `Traefik` router:  
-  1. Install [traefik](https://github.com/traefik/traefik/releases/tag/v2.4.14)
-
 ### Setup
 
 * Build model server (300MB) and web server images (~3GB):
 
 ```bash
-docker_build_model_server.sh 
-docker_build_web_server.sh
+bash docker_model/build.sh 
+bash docker_web/build.sh
 ```
 
-* Run all containers:  
+* Create network and run:  
 
 ```bash
-docker-compose up
+# create an external public network 
+docker network create traefik-public
+# compose containers
+docker-compose up  
 ```
+
+* Open swagger ui in Chrome or Vivaldi browser http://web.service.localhost/docs. Currently does not work in firefox and safari.
+
 
 # Tools
 
@@ -52,7 +55,8 @@ docker-compose up
 
 * `Docker Compose`: to configure & start all the containers  
 
-
 nohup tensorflow_model_server --rest_api_port=8502 --model_name=img_model --model_base_path="${model}" >logs/server.log 2>&1 # path of model to serve
 
-
+# Challenges
+  
+* Tensorflow is heavy (500 MB)

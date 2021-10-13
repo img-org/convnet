@@ -30,13 +30,14 @@ with open(params_path) as file:
     PARAMS = yaml.safe_load(file)
 
 
-# @app.get("/")
-# def home():
-#     return {"Home"}
-
-
 @app.get("/")
+def home():
+    return {"Home"}
+
+
+# @app.post("/predict")
 # async def predict(img: UploadFile = File(...)):
+@app.get("/predict")
 async def predict():
 
     # # handle exceptions
@@ -64,9 +65,8 @@ async def predict():
     # # make (height, width, 1) gray
     # img_data = to_gray(img_data)
     # predicted = inference.run(img_data)
-    from ipdb import set_trace; set_trace()
     predicted = inference.run()
-    return {"prediction:", predicted}
+    return {"prediction": predicted}
 
 
 @app.get("/items/{id}", response_class=HTMLResponse)
@@ -80,19 +80,7 @@ if __name__ == "__main__":
     """
     entry point
     usage:
-        # training
         python main.py train
     """
-
-    # get run argument
-    args = sys.argv
-    is_arg = len(args) == 2
-
-    # # choose task
-    # if is_arg and args[1] == "train":
-    #     print("training")
-    #     train.run(params=PARAMS)
-    if is_arg and args[1] == "web_serve":
-        print("serving web")
-        uvicorn.run(app,host="localhost", port=5000)
-        # uvicorn.run(app,host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
+    # uvicorn.run(app,host="localhost", port=5000)
