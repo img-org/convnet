@@ -1,5 +1,3 @@
-import sys
-
 import uvicorn
 import yaml
 from fastapi import (
@@ -35,37 +33,34 @@ def home():
     return {"Home"}
 
 
-# @app.post("/predict")
-# async def predict(img: UploadFile = File(...)):
-@app.get("/predict")
-async def predict():
+@app.post("/predict")
+async def predict(img: UploadFile = File(...)):
 
-    # # handle exceptions
-    # if img is None or img.file is None:
-    #     raise HTTPException(
-    #         status_code=400,
-    #         detail="Please provide an image",
-    #     )
-    # ext = img.filename.split(".")[-1] in (
-    #     "jpg",
-    #     "jpeg",
-    #     "png",
-    # )
-    # # check extension
-    # if not ext:
-    #     raise HTTPException(
-    #         status_code=400,
-    #         detail="Please load a .jpg or .png",
-    #     )
-    # # preprocesisng
-    # # make (height, width, 3) RGB
-    # img_data = read_convert_image(
-    #     img.file.read(), height=28, width=28
-    # )
-    # # make (height, width, 1) gray
-    # img_data = to_gray(img_data)
-    # predicted = inference.run(img_data)
-    predicted = inference.run()
+    # handle exceptions
+    if img is None or img.file is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Please provide an image",
+        )
+    ext = img.filename.split(".")[-1] in (
+        "jpg",
+        "jpeg",
+        "png",
+    )
+    # check extension
+    if not ext:
+        raise HTTPException(
+            status_code=400,
+            detail="Please load a .jpg or .png",
+        )
+    # preprocesisng
+    # make (height, width, 3) RGB
+    img_data = read_convert_image(
+        img.file.read(), height=28, width=28
+    )
+    # make (height, width, 1) gray
+    img_data = to_gray(img_data)
+    predicted = inference.run(img_data)
     return {"prediction": predicted}
 
 
@@ -83,4 +78,3 @@ if __name__ == "__main__":
         python main.py train
     """
     uvicorn.run(app, host="0.0.0.0", port=5000)
-    # uvicorn.run(app,host="localhost", port=5000)

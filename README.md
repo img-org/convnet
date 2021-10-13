@@ -33,13 +33,9 @@ python main.py train
 * Build model server (300MB) and web server images (~3GB):
 
 ```bash
+# build services 
 bash docker_model/build.sh 
 bash docker_web/build.sh
-```
-
-* Create network and run:  
-
-```bash
 # create an external public network 
 docker network create traefik-public
 # compose containers
