@@ -4,28 +4,10 @@
 # usage:
 #
 #   ```bash
-#   # run in codebase root
+#   # run in codebase's root
 #   docker_web/build.sh
 #   ```
 
-# FROM python:3.7
-# RUN pip install --upgrade pip
-# RUN groupadd --gid 1000 python \
-#   && useradd --uid 1000 --gid python --shell /bin/bash --create-home python
-
-# # Create the work dir and set permissions as WORKDIR set the permissions as root
-# RUN mkdir /home/python/webapp/ && chown -R python:python /home/python/webapp
-# WORKDIR /home/python/webapp
-# USER python
-# ENV PATH="/home/worker/.local/bin:${PATH}"
-# COPY --chown=python:python . .
-# COPY src/requirements.txt requirements.txt
-# RUN pip install -r requirements.txt
-# EXPOSE 5000
-# CMD ["python", "-u", "main.py", "web_serve"]
-
-
-# syntax=docker/dockerfile:1
 FROM python:3.7
 RUN pip install --upgrade pip
 WORKDIR /code
