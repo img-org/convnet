@@ -1,0 +1,19 @@
+# author: steeve laquitaine
+# usage: 
+#   pip install -r src/requirements.txt
+
+# conda installed
+ipykernel==6.4.1
+pyyaml==5.4.1
+jinja2==3.0.1               # web page templating
+python-multipart==0.0.5
+pillow==8.3.1
+matplotlib==3.4.2
+
+# pip installed
+fastapi==0.70.0
+uvicorn[standard]==0.15.0
+pyngrok==5.1.0
+nest-asyncio==1.5.1
+protobuf==3.18.1
+min-tfs-client==1.0.2  # tensorflow serving

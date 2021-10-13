@@ -1,0 +1,31 @@
+# author: steeve laquitaine
+# purpose:
+#
+#   build model service: a docker container that serves an image classification model
+
+# get tensorflow/serving:2.4.1 image from docker hub
+FROM tensorflow/serving:2.4.1 
+
+# Set model and path variables
+ENV MODEL_NAME=model
+ENV MODEL_BASE_PATH=/models
+
+# create model path on container and copy model there
+RUN mkdir -p ${MODEL_BASE_PATH}/${MODEL_NAME}
+COPY ./models/model/ .${MODEL_BASE_PATH}/${MODEL_NAME}
+
+# tensorflow/serving:2.4.1 already contains
+# a tf_serving_entrypoint.sh script
+# I rewrite it with my custom configuration
+RUN echo '#!/bin/bash \n\n\
+tensorflow_model_server \
+--port=8500 \
+--rest_api_port=8501 \
+--model_name=${MODEL_NAME} \
+--model_base_path=${MODEL_BASE_PATH}/${MODEL_NAME} \
+"$@"' > /usr/bin/tf_serving_entrypoint.sh \
+&& chmod +x /usr/bin/tf_serving_entrypoint.sh
+
+# set as entry point
+ENTRYPOINT ["/usr/bin/tf_serving_entrypoint.sh"]
+
